@@ -1,0 +1,45 @@
+.errorblock {
+	color: #ff0000;
+	background-color: #ffEEEE;
+	border: 3px solid #ff0000;
+	padding: 8px;
+	margin: 16px;
+}
+		
+.form-signin{
+	max-width: 330px;
+	padding: 15px;
+    margin: 0 auto;
+    background-color: #ebebeb;
+    border: 1px solid #e0e0e0;
+    margin-top: 8px;
+    -webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	
+}
+
+.ac-login-form-container{
+	margin-top: 10%;
+}
+
+input{
+	margin-bottom: 10px;
+}
+
+.error-page{
+	background-color: #e74c3c;
+	color: #ecf0f1;
+}
+
+.spacing-fix{
+	padding: 20px 40px;
+}
+
+.glyphicon{
+	padding-right: 10px;
+}
+
+.go-back{
+	color: #ecf0f1;
+}

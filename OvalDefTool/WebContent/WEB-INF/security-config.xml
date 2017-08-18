@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	
+	
+	<security:http auto-config="true" entry-point-ref="casAuthEntryPoint" >
+		<security:csrf disabled="true"/>
+		<security:intercept-url pattern="/home/welcome.do" access="hasAnyRole('ADMIN','ROLE_DL PH CA Local Personnel')"/>
+		<security:intercept-url pattern="/home/login.do" access="isAnonymous()"/>
+		<security:form-login 
+			login-page="/home/login.do"
+			authentication-success-handler-ref="customSucHandler" 
+			authentication-failure-handler-ref="customFaiHandler" 
+			/>
+		<security:custom-filter after="CAS_FILTER" ref="casAuthenticationFilter"/>
+		<security:custom-filter before="LOGOUT_FILTER" ref="requestSingleLogoutFilter"/>
+		<security:custom-filter before="CAS_FILTER" ref="singleLogoutFilter"/>		
+	</security:http>
+	
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider user-service-ref="userDetailServiceDefine" />
+		<security:authentication-provider ref="ldapAuthProvider" />
+		<security:authentication-provider ref="casAuthenticationProvider" />
+	</security:authentication-manager>
+
+	<security:user-service id="userDetailServiceDefine">
+		<security:user name="macrmic" password="macrmic" authorities="ROLE_ADMIN" />
+		<security:user name="m" password="m" authorities="ROLE_USER" />
+	</security:user-service>
+
+	<!-- LDAP -->
+	<bean id="ldapContextSource" class="org.springframework.security.ldap.DefaultSpringSecurityContextSource">
+		<constructor-arg value="ldap://ldap.ivcorp.net:389"></constructor-arg>
+		<property name="base" value="dc=ivcorp,dc=net"></property>
+		<property name="userDn" value="IV-LIFERAY-SRV"></property>
+		<property name="password" value="ld@ps3rv1ce"></property>
+	</bean>
+
+	<bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+		<constructor-arg ref="ldapContextSource"/>
+	</bean>
+ 
+	<bean id="userSearch" class="org.springframework.security.ldap.search.FilterBasedLdapUserSearch">
+		<constructor-arg index="0" value=""></constructor-arg>
+		<constructor-arg index="1" value="(sAMAccountName={0})"></constructor-arg>
+		<constructor-arg index="2" ref="ldapContextSource"></constructor-arg>
+		<property name="searchSubtree" value="true"></property>		
+	</bean>
+		
+	<bean id="ldapAuthProvider" class="org.springframework.security.ldap.authentication.LdapAuthenticationProvider">
+		<constructor-arg>
+			<bean class="org.springframework.security.ldap.authentication.BindAuthenticator">
+				<constructor-arg ref="ldapContextSource"></constructor-arg>
+				<property name="userSearch" ref="userSearch"></property>
+			</bean>
+		</constructor-arg>
+		<constructor-arg ref="authoritiesPopulator" />
+		<!-- 
+		<constructor-arg>
+				<bean class="org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator">
+					<constructor-arg ref="ldapContextSource" />
+					<constructor-arg value="" />
+					<property name="groupRoleAttribute" value="cn" />
+					<property name="searchSubtree" value="true" /> 
+					<property name="groupSearchFilter"  >
+						<value>ObjectClass=organizationalPerson</value>
+					</property>
+					<property name="rolePrefix" value=""></property>
+				</bean>
+		</constructor-arg>
+		 -->
+		<property name="userDetailsContextMapper" ref="userDetailService" />
+		<property name="useAuthenticationRequestCredentials" value="true" />
+	</bean>
+
+	<bean id="userDetailService"
+		class="com.security.UserDetailsServiceImpl" />
+	<bean id="authoritiesPopulator"
+		class="com.security.UserAuthoritiesPopulator" />
+
+
+
+	<!-- CAS -->
+	<bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">
+		<property name="service" value="https://lportald/OvalDefTool/login/cas"></property>
+		<property name="sendRenew" value="false"></property>
+	</bean>
+
+	<bean id="casAuthenticationFilter" class="org.springframework.security.cas.web.CasAuthenticationFilter">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="authenticationFailureHandler" ref="customFaiHandler" />
+		<property name="authenticationSuccessHandler" ref="customSucHandler" />
+	</bean>
+
+	<bean id="casAuthEntryPoint" class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">
+		<property name="loginUrl" value="https://lportald/cas/login"/>
+		<property name="serviceProperties" ref="serviceProperties" />
+	</bean>
+
+	<bean id="proxyGrantingTicketStorage" class="org.jasig.cas.client.proxy.ProxyGrantingTicketStorageImpl" />
+
+	<bean id="casAuthenticationProvider" class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
+		<property name="userDetailsService" ref="userDetailService" />
+		<property name="serviceProperties" ref="serviceProperties" />
+		<property name="ticketValidator">
+			<bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+				<constructor-arg index="0" value="https://lportald/cas" />
+			</bean>
+		</property>
+		<property name="key" value="an_id_for_this_auth_provider_only" />
+	</bean>
+
+	<bean id="singleLogoutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter" />
+	<bean id="requestSingleLogoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<constructor-arg ref="logoutSuccessFilter" />
+		<constructor-arg>
+			<bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"></bean>
+		</constructor-arg>
+		<property name="filterProcessesUrl" value="/j_spring_cas_security_logout"></property>
+	</bean>
+ 
+ 	<bean id="logoutSuccessFilter" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+ 		<property name="defaultTargetUrl" value="https://lportald/OvalDefTool/home/login.do" />
+ 	</bean>
+
+ 	<bean id="customSucHandler"
+ 		class="com.security.auth.handler.CustomAuthenticationSuccessHandler" />
+ 	<bean id="customFaiHandler"
+ 		class="com.security.auth.handler.CustomAuthenticationFailureHandler" />
+
+</beans>
