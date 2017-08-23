@@ -23,7 +23,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 		_log.info("**************AUTHENTICATION FAILURE*******************");
 		_log.info("Auth Exc Msg: " + authExc.getMessage());
 		_log.info("*******************************************************");
-		redirectStrategy.sendRedirect(req, res, "/login.do");
+		redirectStrategy.sendRedirect(req, res, "/home/login.do");
 	}
 	
 	Logger _log=Logger.getLogger("Login Failure Handler");

@@ -16,10 +16,6 @@ Cve.init=function(){
 	$("#mitreMetaInfo").toggle(1000,"linear");
 	$("#nvdMetaInfo").toggle(1000,"linear");
 	
-	$(".dependent").toggle(1000,"linear");
-	$(".parent").click(function(){
-		console.log($("."+ $(this).attr("rowid")).next().toggle(1000,"linear"));
-	});
 	setTimeout(function() {
 		$("body").spin("modal");
 	}, 3000);
@@ -140,29 +136,32 @@ Cve.plotAvailableDefinition=function(ap){
 	var sDisplay="<tr><td>"
 						+"<div class='input-group input-group-sm'>" +
 							"<span class='input-group-addon' >Title</span>" +
-							"<input type='text' class='form-control' value='"+elem+"'>"+
+							"<input type='text' class='def-input form-control' value='"+elem+"'>"+
 						"</div>" +
 						"<div class='input-group input-group-sm'>" +
 							"<span class='input-group-addon' id='ssFamily'>Family</span>" +
-							"<input id='defFamily"+rowCount+"' type='text' class='form-control' aria-describedby='ssFamily' value='"+sFamily+"'>"+
+							"<input id='defFamily"+rowCount+"' type='text' class='def-input form-control' aria-describedby='ssFamily' value='"+sFamily+"'>"+
 							"<div class='input-group-btn'>" +
-								"<button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Selection<span class='caret'></span></button>"	+
+								"<button type='button' class='def-input btn btn-default dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Selection<span class='caret'></span></button>"	+
 								sLiFamily +
 							"</div>"+
 						"</div>" +
 						"<div class='input-group input-group-sm'>" +
-							"<span class='input-group-addon' id='ssPlatform'>Platform</span>" +
-							"<input type='text' class='form-control' aria-describedby='ssPlatform' value='"+platform+"'>"+
+							"<span class='input-group-addon' id='ssPlatform"+rowCount+"'>Platform</span>" +
+							"<input type='text' class='def-input form-control' aria-describedby='ssPlatform' value='"+platform+"'>"+
 						"</div>" +	
 						"<div class='input-group input-group-sm'>" +
 							"<span class='input-group-addon' >CPE Reference</span>" +
-							"<input id='defCpe"+rowCount+"' type='text' class='form-control' >"+
+							"<input id='defCpe"+rowCount+"' type='text' class='def-input form-control' >"+
 							"<div class='input-group-btn'>" +
 							"<button type='button' class='btn btn-default dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>Selection<span class='caret'></span></button>"	+
 							sLiCpes +
-						"</div>"+
+						"</div>"+					
 					"</div>" +
-
+					"<div class='input-group input-group-sm'>" +
+						"<span class='input-group-addon' id='ssDescription"+rowCount+"'>Description</span>" +
+						"<input type='text' class='def-input form-control' aria-describedby='ssPlatform'>"+
+					"</div>" +		
 					"</td>" +
 					"<td>" +
 						"<input type='checkbox'>" +
@@ -191,6 +190,46 @@ Cve.click=function(){
 		$("#nvdMeta").empty();
 		$("#nvdMetaInfo").empty();
 		$("input[name='cveTitle']").val("");	
+	});
+	
+	$("#btnAddDef").click(function(){
+		$.each($("input[type=checkbox]:checked"),function(idx, elem){
+			var def=new Object();
+			def.title=$($(elem).parents().eq(1).find("td input.def-input")[0]).val();
+			def.family=$($(elem).parents().eq(1).find("td input.def-input")[1]).val();
+			def.platform=$($(elem).parents().eq(1).find("td input.def-input")[2]).val();
+			def.cpe=$($(elem).parents().eq(1).find("td input.def-input")[3]).val();
+			def.description=$($(elem).parents().eq(1).find("td input.def-input")[4]).val();
+			
+			var htmlContent="<ul>" +
+							"<li>Title: "+def.title+"</li>"+
+							"<li>Family: "+def.family+"</li>"+
+							"<li>Platform: "+def.platform+"</li>"+
+							"<li>CPE: "+def.cpe+"</li>"+
+							"<li>Description: "+ def.description+"</li>"+
+							"</ul>";
+			
+			var content="<tr class='tr-"+idx+"'><td colspan='2'><i rowid='tr-"+idx+"' class='ptr-hand parent fa fa-arrow-right'></i>"+def.title+"</td></tr>"+
+						"<tr class='tr-"+idx+"-child' style='display: none;'><td></td><td>"+htmlContent+"</td></tr>";
+			console.log(content);
+			$("#tblSelectedDef tbody").append(content);
+			//$.each($(elem).parents().eq(1).find("td input.def-input"),function(idx, inp){
+			//	console.log($(inp).val());
+			//});
+		});
+		Cve.click();
+	});
+	
+	$(".parent").click(function(){
+		//console.log($(this).attr("rowid"));
+		console.log($("."+ $(this).attr("rowid")+"-child").toggle(1000,"linear"));
+		if ($(this).hasClass("fa-arrow-right")){
+			$(this).removeClass("fa-arrow-right").addClass("fa-arrow-down");
+		}else{
+			$(this).removeClass("fa-arrow-down").addClass("fa-arrow-right");
+		}
+		//fa-arrow-right
+		//fa-arrow-down
 	});
 }
 

@@ -83,6 +83,7 @@
 	      	</div>       	
      	</div> <!-- modal-body -->
 		<div class="modal-footer">
+			<button id="btnAddDef" type="button" class="btn btn-default" data-dismiss="modal">Add Selected Definition</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	    </div>
     </div>

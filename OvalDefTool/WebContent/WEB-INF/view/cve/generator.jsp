@@ -34,13 +34,16 @@
 				<!-- Definitions -->
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">Definitions <i class="add-definition fa fa-plus-square-o ptr-hand" aria-hidden="true"></i></legend>	
-					<table class="table table-stripped">
+					<table id="tblSelectedDef" class="table table-stripped">
 						<thead class="bg-info">
 							<tr><th colspan="2">Title</th></tr>
 						</thead>
 						<tbody>
-							<tr class="tr-1"><td colspan="2"><i rowid="tr-1" class="parent fa fa-arrow-right"></i> A</td></tr>
-							<tr class="tr-1"><td>1</td><td>2</td></tr>
+							<tr class="tr-1"><td colspan="2"><i rowid="tr-1" class="ptr-hand parent fa fa-arrow-right"></i> A</td></tr>
+							<tr class="tr-1-child" style="display:none"><td>A-1</td><td>A-2</td></tr>
+							
+							<tr class="tr-2"><td colspan="2"><i rowid="tr-2" class="ptr-hand parent fa fa-arrow-right"></i> B</td></tr>
+							<tr class="tr-2-child" style="display:none"><td>B-1</td><td>B-2</td></tr>
 						</tbody>
 					</table>
 				</fieldset><!-- Definitions -->	
