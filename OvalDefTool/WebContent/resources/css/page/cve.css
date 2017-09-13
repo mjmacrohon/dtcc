@@ -1,3 +1,18 @@
 .chosen-container{
   width: 100% !important;
 }
+
+
+td.details-control {
+
+    background: url('../resources/css/images/details_open.png'String) no-repeat center center;
+
+    cursor: pointer;
+
+}
+
+tr.shown td.details-control {
+
+    background: url('../resources/css/images/details_close.png'String) no-repeat center center;
+
+}

@@ -31,8 +31,12 @@
 		<link rel="stylesheet" href="../resources/css/bootstrap-select.css">
 		<!-- JQUERY UI -->
 		<link rel="stylesheet" href="../resources/css/jquery-ui.css">
-		<!-- DATATable -->
-		<link rel="stylesheet" href="../resources/css/table.css">
+		<!-- DATATable			
+		<link rel="stylesheet" href="../resources/css/jquery.dataTables.min.css">
+		 -->	
+		 
+		<!-- DATATable bootstrap style -->				
+		<link rel="stylesheet" href="../resources/css/dataTables.bootstrap.min.css">
 		
 		<!-- bootstrap-datetimepicker -->
 		<link rel="stylesheet" href="../resources/css/bootstrap-datetimepicker.css">

@@ -1,3 +1,5 @@
+
+<!-- new definition modal -->
 <div class="modal fade" id="modalNewDefinition" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -11,7 +13,7 @@
       			<form>
       				<div class="just-float-left input-group col-sm-4 col-md-4">
 						<span class="input-group-addon" >CVE</span>
-						<select name="cveIds" class="form-control"  placeholder="cveMeta"  aria-describedby="basic-addon1">
+						<select name="cveIds" class="form-control input-group-addon"  placeholder="cveMeta"  aria-describedby="basic-addon1">
 							
 						</select>
 						<span class="input-group-addon " ><i class="ptr-hand fa fa-plus"></i></span>	
@@ -20,8 +22,8 @@
 						</span>						
 					</div>
 					<div class="input-group col-sm-8 col-md-8">
-							<span class="input-group-addon" id="cveTitle">Description</span>
-							<input type="text" name="cveTitle" class="form-control" placeholder=""cveTitle"" aria-describedby="basic-addon1">
+							<span class="input-group-addon" id="cveTitle">Title</span>
+							<input type="text" name="cveTitle" class="form-control" placeholder="cveTitle" aria-describedby="basic-addon1">
 					</div>	
 					<span hidden id="msrcTitle"></span>
       			</form>
@@ -73,20 +75,47 @@
 			           		</tbody>
 			           </table>
 					</div>
-				</div>
-      		
-      		
-      		
-      		
-      		
-
-	      	</div>       	
+				</div>   		
+   	      	</div>       	
      	</div> <!-- modal-body -->
 		<div class="modal-footer">
-			<button id="btnAddDef" type="button" class="btn btn-default" data-dismiss="modal">Add Selected Definition</button>
+			<button id="btnAddDef" type="button" class="btn btn-primary" data-dismiss="modal">Add Selected Definition</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	    </div>
     </div>
   </div>
 </div>
+
+
+
+<!-- criteria -->
+<div class="modal fade" id="modalCriterion" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+    	<div class="modal-header">
+        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        	<h4 class="modal-title">Criterion
+        	</h4>
+      	</div>
+      	<div class="modal-body">
+      		<div class="container-fluid">
+				<div class="input-group">
+				  <span class="input-group-addon" id="basic-addon1">Comment</span>
+				  <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+				</div>
+				<br>
+				<div class="input-group">
+				  <span class="input-group-addon" id="basic-addon1">Test Ref </span>
+				  <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon1">
+				</div>
+	      	</div>       	
+     	</div> <!-- modal-body -->
+		<div class="modal-footer">
+			<button id="btnAddCriterion" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	    </div>
+    </div>
+  </div>
+</div>
+   
       	

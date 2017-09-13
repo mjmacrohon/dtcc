@@ -20,6 +20,7 @@
    <script src="../resources/js/file.js"></script>
    <script src="../resources/js/jquery-dateFormat.js"></script>
    <script src="../resources/js/defiant.min.js"></script>
+   <script src="../resources/js/jquery.dataTables.min.js"></script>
    
   
    

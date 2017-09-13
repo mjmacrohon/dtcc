@@ -1,6 +1,9 @@
 package com.dtcc.test;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.Proxy.Type;
 
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -9,6 +12,8 @@ import org.jsoup.nodes.Document;
 public class JSoupTest {
 
 	public static void main(String[] args) throws IOException {
+		Proxy proxy=new Proxy(Type.HTTP, new InetSocketAddress("gateway.zscaler.net", 80));
+	
 		
 		// HTTP
 		//System.setProperty("http.proxyHost", "http://pac.zscaler.net/ivoclarvivadent.com/proxy.pac");
@@ -19,9 +24,10 @@ public class JSoupTest {
 		//System.setProperty("https.proxyHost", "https://webproxy.ivcorp.net");
 		//System.setProperty("https.proxyPort", "9400");
 		//mitre
+		
 		String sUrl="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0001";
 		//sUrl="http://lisc-ordmgrd01/order-manager-ui/";
-		Document jSoupDoc=Jsoup.connect(sUrl).get();
+		Document jSoupDoc=Jsoup.connect(sUrl).proxy(proxy).get();
 		_log.info("" + jSoupDoc.title());
 		_log.info("" + jSoupDoc.select("td").get(8).html());
 		

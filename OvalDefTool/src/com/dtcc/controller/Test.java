@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Controller
 @RequestMapping("/test")
 @MultipartConfig(fileSizeThreshold=1024*1024*2, // 2MB 
@@ -27,6 +30,9 @@ public class Test {
 		String everything="";
 		try(FileInputStream inputStream = new FileInputStream("C:\\Temp\\nvdcve-1.0-2017.json")) {     
 		    everything = IOUtils.toString(inputStream);
+
+		    JsonNode rootNode=new ObjectMapper().readTree(inputStream);
+		    rootNode.get("CVE_data_format").asText();
 		    
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

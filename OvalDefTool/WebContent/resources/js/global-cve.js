@@ -6,7 +6,7 @@ GlobalCve.nvdCveMap=[];
 GlobalCve.init=function(){
 	$.getJSON("/OvalDefTool/jsonrest/cves.do", function(result){
 		GlobalCve.nvdCve=result;
-		 $.each(result.CVE_Items,function(idx,cve){
+		 $.each(result.CVE_Items,function(idx,cve){			 
 			 GlobalCve.nvdCveMap[cve.cve.CVE_data_meta.ID]=cve;
 		 });
 	});
@@ -62,6 +62,8 @@ GlobalCve.extractMsrcCve=function(cveId){
 		$.each(result.affectedProducts,function(idx,ap){
 			affectedProducts.push(ap);
 		});
+		$("body").spin("modal");
+	}).fail(function(){
 		$("body").spin("modal");
 	});
 	GlobalCve.nvdCveMap[cveId].affectedProducts=affectedProducts;

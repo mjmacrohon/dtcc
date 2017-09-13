@@ -1,14 +1,18 @@
 var Cve = Cve || {};
+var dtDefinition;
+var dtOvalDefs;
 
 Cve.init=function(){
 	$("body").spin("modal");
 	
-    $.each(GlobalCve.nvdCve.CVE_Items,function(idx,cve){
-    	$("select[name='cveIds']").append("<option>"+cve.cve.CVE_data_meta.ID+"</option>");
-    });  
-  
+	$.getJSON("/OvalDefTool/jsonrest/readcves.do", function(result){
+		  $.each(result,function(idx,cve){
+		    	$("select[name='cveIds']").append("<option>"+cve+"</option>");
+		  }); 
+		  $("select[name='cveIds']").chosen({ search_contains: true });
+		  //$("select[name='ovalClass']").chosen({ search_contains: false });
+	});
     
-    $("select[name='cveIds']").chosen({ search_contains: true });
 
 	$(".date-submission").datetimepicker();
 	
@@ -20,6 +24,8 @@ Cve.init=function(){
 		$("body").spin("modal");
 	}, 3000);
 	
+	dtDefinition=$("#tblSelectedDef").DataTable();
+	dtOvalDefs=$("#tblOvalDefinitions").DataTable();
 };
 
 Cve.showModalNewDefintion=function(){
@@ -27,51 +33,63 @@ Cve.showModalNewDefintion=function(){
 		$("#modalNewDefinition").modal("show");
 	});
 };
+
+Cve.showModalCriterion=function(){	
+	$("#modalCriterion").modal("show")
+};
+
+Cve.showModalOvalId=function(){
+	$("#modalSearchOval").modal("show")
+};
+
 Cve.processCveData=function(){		
 	$(".process-cve-data").click(function(){
 		$("body").spin("modal");
 		$("#msrcMetaInfo").empty();
 		$("#tblProduct tbody").empty();
 		var cveId=$("select[name='cveIds']").chosen().val();
-//		$.getJSON("/OvalDefTool/jsonrest/cvemsrcmeta.do?cveId="+cveId, function(result){
-		
 			var result=GlobalCve.nvdCveMap[cveId].msrcCve;
-			if (result.length<=0)
-				console.log("unable to find msrc cve meta....");
-			else{
-				
-				$("#msrcTitle").text(result.cveTitle);
-				$("input[name='cveTitle']").val(result.cveTitle + " - " + cveId);
-				var sHtml="<p><a target=_blank href=https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/"+result.cveNumber+">"+result.cveNumber+"</a></p>";
-				sHtml=sHtml+"<p>"+result.cveTitle+"</p>";
-				sHtml=sHtml+"<p>"+result.description+"</p>";
-				$("#msrcMeta").html(sHtml);
-				
-				//Affected Products
-				sHtml="";	
-				$("#tblAffectedFamily tbody").empty();
-				$.each(GlobalCve.nvdCveMap[cveId].affectedProducts, function(idx,ap){
-					sHtml=sHtml+"<li>"+ap.name+"</li>";		
-					Cve.plotAvailableDefinition(ap)
-				});	
-				
-				$("#msrcMetaInfo").html("<p>Affected Products</p><ul>"+sHtml+"</ul>");
-				$("#mitreMetaInfo").html("<p>Affected Products</p><ul>"+sHtml+"</ul>");
-				$("#nvdMetaInfo").html("<p>Affected Products</p><ul>"+sHtml+"</ul>");
-
+			console.log(result);
+			if (typeof result != 'undefined'){
+				if (result.length<=0)
+					console.log("unable to find msrc cve meta....");
+				else{
+					$("input[name='cveTitle']").val(result.cveTitle + " - " + cveId);
+					
+					$("#msrcTitle").text(result.cveTitle);				
+					var sHtml="<p><a target=_blank href=https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/"+result.cveNumber+" source='MSRC'>"+result.cveNumber+"</a><input name='oval-input' holder-id='#msrcMeta' class='ptr-hand oval-input pull-right' type='radio' /></p>";
+					sHtml=sHtml+"<p>"+result.cveTitle+"</p>";
+					sHtml=sHtml+"<p>"+result.description+"</p>";
+					$("#msrcMeta").html(sHtml);
+					
+					//Affected Products
+					sHtml="";	
+					$("#tblAffectedFamily tbody").empty();
+					$.each(GlobalCve.nvdCveMap[cveId].affectedProducts, function(idx,ap){
+						sHtml=sHtml+"<li>"+ap.name+"</li>";		
+						Cve.plotAvailableDefinition(ap)
+					});	
+					
+					$("#msrcMetaInfo").html("<p>Affected Products</p><ul>"+sHtml+"</ul>");
+					$("#mitreMetaInfo").html("<p>Affected Products</p><ul>"+sHtml+"</ul>");
+					$("#nvdMetaInfo").html("<p>Affected Products</p><ul>"+sHtml+"</ul>");
+				}	
 			}
-//		});	//getJson	
-		
+
 		$.getJSON("/OvalDefTool/jsonrest/cvemitrenvdmeta.do?cveId="+cveId, function(result){
 			//1st mitre 2nd nvd
-			$.each(result,function(idx,cveElem){				
+			$.each(result,function(idx,cveElem){	
 				var sHandler="#mitreMeta";
-				var sHtml="<p><a target=_blank href="+cveElem.url+">"+cveElem.cveNumber+"</a></p>";
-				sHtml=sHtml+"<p>"+$("#msrcTitle").text()+"</p>";
-				sHtml=sHtml+"<p>"+cveElem.description+"</p>";
+				var sSource="CVE"
 				if (idx===1){
 					sHandler="#nvdMeta";
+					sSource="NVD";
 				}
+				
+				var sHtml="<p><a target=_blank href="+cveElem.url+" source='"+sSource+"'>"+cveElem.cveNumber+"</a><input name='oval-input' holder-id='"+sHandler+"' class='ptr-hand oval-input pull-right' type='radio' source='' /></p>";
+				sHtml=sHtml+"<p >"+$("#msrcTitle").text()+"</p>";
+				sHtml=sHtml+"<p>"+cveElem.description+"</p>";
+
 				
 				$(sHandler).html(sHtml);
 				sHtml="";
@@ -80,6 +98,7 @@ Cve.processCveData=function(){
 			});//each
 			$("body").spin("modal");
 		});//getJson
+
 	});
 };
 
@@ -100,7 +119,7 @@ Cve.showAffectedFamily=function(){
 
 Cve.plotAffectedFamily=function(elem){
 	var sName=elem.name.split("for");	
-	var sDisplay="<tr><td>"+elem.name+"</td><td><input type='text' class='form-control'value='"+sName[0]+"' ></td></tr>";
+	var sDisplay="<tr><td>"+elem.name+"</td><td><input type='text' class='form-control' value='"+sName[0]+"' ></td></tr>";
 	$("#tblAffectedFamily tbody").append(sDisplay);
 }
 
@@ -191,53 +210,131 @@ Cve.click=function(){
 		$("#nvdMetaInfo").empty();
 		$("input[name='cveTitle']").val("");	
 	});
-	
+
 	$("#btnAddDef").click(function(){
+		var cveId=$("select[name='cveIds']").chosen().val();	
+		var htmlContent="";
+		var content="";
+		var ovalHandler=$("input[name='oval-input']:checked").attr("holder-id");
+		console.log(ovalHandler);
+		var ovalData=new Object();
+		
+		ovalData.title=$("input[name='cveTitle']").val();
+		ovalData.ovalClass="vulnerability";
+		ovalData.ref_id=cveId;
+		ovalData.ref_url=$(ovalHandler+" p a").attr("href");
+		ovalData.source=$(ovalHandler+" p a").attr("source");
+		var ovalDescription="";
+
+		
+		
+		$.each($(ovalHandler+" p"),function(idx, elem){
+			if (idx>=2){
+				ovalDescription=ovalDescription+$(elem).html();
+			}
+		})
+		ovalData.description=ovalDescription;
+		console.log(ovalData);
+		$("input[name='ovalTitle']").val(ovalData.title);
+		$("input[name='ovalClass']").val(ovalData.ovalClass);
+		$("input[name='referenceId']").val(ovalData.ref_id);
+		$("input[name='referenceUrl']").val(ovalData.ref_url);
+		$("input[name='referenceSource']").val(ovalData.source);
+		$("textarea[name='ovalDescription']").val(ovalData.description);
+		
+/*
 		$.each($("input[type=checkbox]:checked"),function(idx, elem){
+			console.log("cnt: " + idx);
 			var def=new Object();
 			def.title=$($(elem).parents().eq(1).find("td input.def-input")[0]).val();
 			def.family=$($(elem).parents().eq(1).find("td input.def-input")[1]).val();
 			def.platform=$($(elem).parents().eq(1).find("td input.def-input")[2]).val();
 			def.cpe=$($(elem).parents().eq(1).find("td input.def-input")[3]).val();
-			def.description=$($(elem).parents().eq(1).find("td input.def-input")[4]).val();
-			
-			var htmlContent="<ul>" +
-							"<li>Title: "+def.title+"</li>"+
-							"<li>Family: "+def.family+"</li>"+
-							"<li>Platform: "+def.platform+"</li>"+
-							"<li>CPE: "+def.cpe+"</li>"+
-							"<li>Description: "+ def.description+"</li>"+
-							"</ul>";
-			
-			var content="<tr class='tr-"+idx+"'><td colspan='2'><i rowid='tr-"+idx+"' class='ptr-hand parent fa fa-arrow-right'></i>"+def.title+"</td></tr>"+
-						"<tr class='tr-"+idx+"-child' style='display: none;'><td></td><td>"+htmlContent+"</td></tr>";
-			console.log(content);
-			$("#tblSelectedDef tbody").append(content);
-			//$.each($(elem).parents().eq(1).find("td input.def-input"),function(idx, inp){
-			//	console.log($(inp).val());
-			//});
-		});
-		Cve.click();
+			def.description=$($(elem).parents().eq(1).find("td input.def-input")[4]).val();			
+			htmlContent="<tr>" +
+							"<td>"+def.title+"</td>"+//Title: 
+							"<td>"+def.family+"</td>"+//Family: 
+							"<td>"+def.platform+"</td>"+//Platform: 
+							"<td>"+def.cpe+"</li>"+//CPE: 
+							"<td>"+ def.description+"</td>"+//Description: 
+							"<td><i rowid='tr-"+idx+"'  onclick='Cve.deleteDef(this)' class='pull-right ptr-hand fa fa-trash fa-5' aria-hidden='true'></i></td>"
+							"</tr>";
+			console.log(htmlContent);
+			//$("#tblSelectedDef tbody").append(htmlContent);
+			var counter=1;
+			dtDefinition.row.add( [
+			            def.title,
+			            def.family,
+			            def.platform,
+			            def.platform,
+			            def.cpe,
+			            "<span onclick='Cve.showModalCriterion()' class='btn btn-danger'>Criterion <span class='badge'>0</span></span>",
+			            "<span rowid='tr-"+idx+"'  onclick='Cve.deleteDef(this)' class='pull-right ptr-hand btn btn-default fa fa-trash fa-5' aria-hidden='true'></span></td>"
+			        ] ).draw( false );
+
+		});//each
+*/		
 	});
 	
-	$(".parent").click(function(){
-		//console.log($(this).attr("rowid"));
-		console.log($("."+ $(this).attr("rowid")+"-child").toggle(1000,"linear"));
-		if ($(this).hasClass("fa-arrow-right")){
-			$(this).removeClass("fa-arrow-right").addClass("fa-arrow-down");
-		}else{
-			$(this).removeClass("fa-arrow-down").addClass("fa-arrow-right");
-		}
-		//fa-arrow-right
-		//fa-arrow-down
-	});
+	
+	
+	$("#btnSearchOval").click(function(){
+		var ovalPram=new Object();
+		ovalPram.definition_id=$("#definition_id").val();
+		ovalPram.title=$("#title").val();
+		ovalPram.description=$("#description").val();
+		ovalPram.reference_id=$("#reference_id").val();
+		
+		ovalPram.platform=$("#platform").val();
+		ovalPram.product=$("#product").val();
+		ovalPram.aclass=$("#product").val();
+		ovalPram.family=$("#family").val();
+		ovalPram.status=$("#status").val();
+		console.log(ovalPram);
+		
+		$.ajax({
+			  url:"/OvalDefTool/jsonrest/ovaldefids.do",
+			  type: "post",
+			  dataType:'json',
+			  contentType: 'application/json',
+			  data:JSON.stringify(ovalPram),
+			  success: function(definitions){
+					dtOvalDefs.clear().draw();
+					$.each(definitions,function(idx, def){
+						dtOvalDefs.row.add( [
+						                     def.definitionUrl,
+						                     def.definitionClass,
+						                     def.title,
+						                     "<span oval-ref-id='"+def.definitionId+"' onclick='Cve.selectOvalDefinition(this)' title='select' class='btn btn-default fa fa-hand-o-up' data-dismiss='modal'></span>"
+						                     ]).draw( false );
+					})
+			  },
+			  error: function(data, status, err){
+				console.log("error");		
+			  }
+		});
+		
+	});	
+}
+
+
+Cve.selectOvalDefinition=function(elem){
+	//oval:org.cisecurity:def:807
+	//console.log($(elem).attr("oval-ref-id"));
+	$("input[name='ovalId']").val($(elem).attr("oval-ref-id"));
 }
 
 Cve.select=function(elem){
 	$("#"+elem.getAttribute("refid")).val(elem.innerHTML);
 }
 
+Cve.deleteDef=function(elem){
+	var trid=$(elem).attr("rowid");
+	$("tr[class^="+trid).remove();
+}
+
 $(document).ready(function(){
+	Cve.init();
 	Cve.click();	
 	Cve.showModalNewDefintion();
 	Cve.processCveData();

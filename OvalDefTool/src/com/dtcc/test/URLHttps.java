@@ -15,7 +15,7 @@ public class URLHttps {
 		URL url = new URL("https://portal.msrc.microsoft.com/api/security-guidance/en-us/CVE/CVE-2017-8552");
 		Proxy proxy=new Proxy(Type.HTTP, new InetSocketAddress("gateway.zscaler.net", 80));
 
-		InputStream is = url.openConnection(proxy).getInputStream();
+		InputStream is = url.openConnection().getInputStream();
 
 	    BufferedReader reader = new BufferedReader( new InputStreamReader( is )  );
 
