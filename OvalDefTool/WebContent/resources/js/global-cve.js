@@ -3,6 +3,8 @@ var GlobalCve = GlobalCve || {};
 GlobalCve.nvdCve;
 GlobalCve.nvdCveMap=[];
 
+
+
 GlobalCve.init=function(){
 	$.getJSON("/OvalDefTool/jsonrest/cves.do", function(result){
 		GlobalCve.nvdCve=result;

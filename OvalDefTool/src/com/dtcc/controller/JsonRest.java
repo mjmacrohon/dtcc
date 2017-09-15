@@ -53,6 +53,7 @@ public class JsonRest {
 	
 	public JsonRest() {
 		super();
+
 		try(FileInputStream inputStream = new FileInputStream("C:\\Temp\\nvdcve-1.0-2017.json")) {     
 		    everything = IOUtils.toString(inputStream);
 		    _log.info("Reading cves......."); 
@@ -67,6 +68,27 @@ public class JsonRest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+/*
+		Timestamp ttStart = new Timestamp(System.currentTimeMillis());
+		Timestamp ttEnd;
+		int ctr=0;
+			
+		String sUrl="https://cve.mitre.org/data/downloads/allitems.html";
+		//sUrl="http://lisc-ordmgrd01/order-manager-ui/";
+		try {
+			Document jSoupDoc=Jsoup.connect(sUrl).maxBodySize(0).get();
+			for(Element e: jSoupDoc.select("font b")){
+				listOfCve.add(e.html());
+			}
+			ttEnd = new Timestamp(System.currentTimeMillis());
+			_log.info("Start: " + ttStart);
+			_log.info("End: " + ttEnd);
+			_log.info("Total Ctr: " + ctr);
+		} catch (IOException e) { 
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+*/
 	}
 
 
@@ -329,6 +351,10 @@ public class JsonRest {
 		reg.setTitle("Mr");
 		return reg;
 	}
+	
+	
+	
+	
 	
 	Logger _log=Logger.getLogger(getClass().getName());
 }

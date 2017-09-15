@@ -13,9 +13,13 @@
       			<form>
       				<div class="just-float-left input-group col-sm-4 col-md-4">
 						<span class="input-group-addon" >CVE</span>
-						<select name="cveIds" class="form-control input-group-addon"  placeholder="cveMeta"  aria-describedby="basic-addon1">
-							
-						</select>
+						
+							<select name="cveIds" class="form-control input-group-addon"  placeholder="cveMeta"  aria-describedby="basic-addon1">
+								
+							</select>
+						<!-- 
+						 	<input type="text" name="cveId" class="form-control nput-group-addon" placeholder="cve id" aria-describedby="basic-addon1">
+						-->
 						<span class="input-group-addon " ><i class="ptr-hand fa fa-plus"></i></span>	
 						<span class="input-group-addon " >
 							<i  title="process" class="process-cve-data ptr-hand fa fa-cog"></i>

@@ -42,6 +42,10 @@ Cve.showModalOvalId=function(){
 	$("#modalSearchOval").modal("show")
 };
 
+Cve.showModalNewProduct=function(){
+	$("#modalNewProduct").modal('show');
+};
+
 Cve.processCveData=function(){		
 	$(".process-cve-data").click(function(){
 		$("body").spin("modal");
@@ -279,6 +283,7 @@ Cve.click=function(){
 	
 	
 	$("#btnSearchOval").click(function(){
+		$("body").spin("modal");
 		var ovalPram=new Object();
 		ovalPram.definition_id=$("#definition_id").val();
 		ovalPram.title=$("#title").val();
@@ -308,13 +313,92 @@ Cve.click=function(){
 						                     "<span oval-ref-id='"+def.definitionId+"' onclick='Cve.selectOvalDefinition(this)' title='select' class='btn btn-default fa fa-hand-o-up' data-dismiss='modal'></span>"
 						                     ]).draw( false );
 					})
+					$("body").spin("modal");
 			  },
 			  error: function(data, status, err){
 				console.log("error");		
+				$("body").spin("modal");
 			  }
-		});
+		});		
+	});	//btnSearchOval
+	
+	
+	$("select[name='family']").change(function(){
+		$.getJSON("/OvalDefTool//db/readprod.do?family="+$(this).val(), function(result){
+			$("select[name='product']").empty();
+			$("select[name='product']").append("<option value='0'></option>");
+			$.each(result,function(idx, prod){
+				$("select[name='product']").append("<option>"+prod.name+"</option>");
+			});
+			$("select[name='product']").selectpicker('refresh');
+			
+		});		
+	});//select[name='family']
+	
+	
+	$("#btnSaveNewProduct").click(function(){
+		$("select[name='product']").append("<option>"+$("#prodName").val()+"</option>");
+		$("select[name='product']").selectpicker('refresh');
+		$("#modalNewProduct").modal('hide')
+	});
+	
+	
+	var success = false;  //NOTE THIS
+	$("#btnGenerateOvalDefinition").click(function(){
+		$("body").spin("modal");
+		var generator=new Object();
+		generator.product_name=$("input[name='productName']").val();
+		generator.product_version=$("input[name='productVersion']").val();
+		generator.schema_version=$("input[name='schemaVersion']").val();
+		generator.timestamp=$("input[name='productTimestamp']").val();
 		
-	});	
+		generator.title=$("input[name='ovalTitle']").val();
+		generator.family=$("select[name='family']").val();
+		
+		//definition
+		var definition=new Object();
+		definition.definitionId=$("input[name='ovalId']").val();
+		definition.definitionClass=$("select[name='ovalClass']").val();
+		definition.title=$("input[name='ovalTitle']").val();
+		definition.version=$("input[name='ovalVersion']").val();
+		definition.description=$("textarea[name='ovalDescription']").val();
+		generator.definition=definition;
+		
+		//affected
+		var affected=[];
+		$.each($("select[name='product']").val(),function(idx,content){
+			var product=new Object();
+			product.name=content;
+			affected.push(product);
+		})
+		generator.affected=affected;
+		
+		var reference=new Object();
+		reference.ref_id=$("input[name='referenceId']").val();
+		reference.ref_url=$("input[name='referenceUrl']").val();
+		reference.source=$("input[name='referenceSource']").val();
+		definition.reference=reference;
+		$.ajax({
+			  url:"/OvalDefTool/cve/generate_oval.do",
+			  type: "post",
+			  dataType:'html',
+			  contentType: 'application/json',
+			  data:JSON.stringify(generator),
+			  async:false, 
+			  success: function(ovalXml){
+					success=true;					
+					$("body").spin("modal");
+			  },
+			  error: function(data, status, err){
+				console.log("error");		
+				$("body").spin("modal");
+			  }
+		});		
+		 if(success){ //AND THIS CHANGED
+			 window.open("/OvalDefTool/cve/xmlresult.do","_blank",'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes');
+		 }
+
+	});
 }
 
 

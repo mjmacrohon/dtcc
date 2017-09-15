@@ -26,9 +26,15 @@ public class Home {
 	@Value("${web.server}")
 	private String webServer;
 		
-	
+
+	public Home() {
+		super();
+
+		
+	}
+
 	@RequestMapping("/login.do")
-	public String login(){
+	public String login(){		
 		return "login";
 	}
 	

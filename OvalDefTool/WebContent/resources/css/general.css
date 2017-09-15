@@ -214,3 +214,11 @@ textarea {
 .note-prgh {
 	padding: 3px;
 }
+
+footer {
+    background-color: #f5f5f5;
+    bottom: -100px;
+    height: 60px;
+    position: absolute;
+    width: 100%;
+}
