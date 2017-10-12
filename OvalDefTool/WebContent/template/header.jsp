@@ -29,15 +29,21 @@
 		<link rel="stylesheet" href="../resources/css/font-awesome.css">
 		<!-- bootstrap select -->
 		<link rel="stylesheet" href="../resources/css/bootstrap-select.css">
+		
+		<!-- jquery treetable  -->
+		<link rel="stylesheet" href="../resources/css/jquery.treetable.css">
+		<link rel="stylesheet" href="../resources/css/jquery.treetable.theme.default.css">
+		
 		<!-- JQUERY UI -->
 		<link rel="stylesheet" href="../resources/css/jquery-ui.css">
-		<!-- DATATable			
+		<!-- DATATable	-->		
 		<link rel="stylesheet" href="../resources/css/jquery.dataTables.min.css">
-		 -->	
+			
 		 
-		<!-- DATATable bootstrap style -->				
+		<!-- DATATable bootstrap style				
 		<link rel="stylesheet" href="../resources/css/dataTables.bootstrap.min.css">
-		
+		 -->
+		 
 		<!-- bootstrap-datetimepicker -->
 		<link rel="stylesheet" href="../resources/css/bootstrap-datetimepicker.css">
 		
@@ -48,3 +54,4 @@
 		<link rel="stylesheet" href="../resources/css/qtip.css">
 		<!--CUSTOM GENERAL CSS-->
 		<link rel="stylesheet" href="../resources/css/general.css">
+		<link rel="stylesheet" href="../resources/css/table.css">

@@ -19,8 +19,9 @@ public class Generator {
 	String family;
 	List<Product> affected=new ArrayList<>();
 	
+	List<Criteria> criterias=new ArrayList<>();
 	
-	
+	List<Test> tests=new ArrayList<Test>();
 	
 	public String getProduct_name() {
 		return product_name;
@@ -69,6 +70,18 @@ public class Generator {
 	}
 	public void setAffected(List<Product> affected) {
 		this.affected = affected;
+	}
+	public List<Criteria> getCriterias() {
+		return criterias;
+	}
+	public void setCriterias(List<Criteria> criterias) {
+		this.criterias = criterias;
+	}
+	public List<Test> getTests() {
+		return tests;
+	}
+	public void setTests(List<Test> tests) {
+		this.tests = tests;
 	}
 	
 	

@@ -18,14 +18,12 @@ public class FamilyServiceImpl implements FamilyService {
 	
 	@Override
 	public String save(Family family) {
-		// TODO Auto-generated method stub
-		return null;
+		return familyDao.save(family);
 	}
 
 	@Override
 	public String delete(Family family) {
-		// TODO Auto-generated method stub
-		return null;
+		return familyDao.delete(family);
 	}
 
 	@Override

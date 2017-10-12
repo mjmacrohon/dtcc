@@ -7,8 +7,8 @@
    <script src="../resources/js/jquery.js"></script>
    <script src="../resources/js/jquery-ui.js"></script>
    <script src="../resources/i18n/datepicker-de.js"></script>
-   <script src="../resources/js/bootstrap.js"></script>  
-   <script src="../resources/js/global-cve.js"></script>  
+   <script src="../resources/js/bootstrap.js"></script>
+   <script src="../resources/js/jquery.treetable.js"></script>   
    <script src="../resources/js/spin.js"></script>
    <script src="../resources/js/bootstrap-select.js"></script>
    <script src="../resources/js/chosen.jquery.min.js"></script>

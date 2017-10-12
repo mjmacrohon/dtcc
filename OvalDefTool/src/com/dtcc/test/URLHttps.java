@@ -11,7 +11,8 @@ public class URLHttps {
 	public static void main(String[] args) throws IOException {
 		//URL url = new URL("https://portal.msrc.microsoft.com/api/security-guidance/en-us/CVE/CVE-2017-8552");
 		
-		URL url = new URL("https://cve.mitre.org/data/downloads/allitems.html");
+		//URL url = new URL("https://cve.mitre.org/data/downloads/allitems.html");
+		URL url = new URL("https://ovaldb.altx-soft.ru/Definitions.aspx?title=Microsoft%20Internet%20Explorer&platform=Microsoft%20Windows%2010");
 		
 		//Proxy proxy=new Proxy(Type.HTTP, new InetSocketAddress("gateway.zscaler.net", 80));
 

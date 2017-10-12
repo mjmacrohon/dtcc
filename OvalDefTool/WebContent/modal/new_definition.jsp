@@ -5,7 +5,7 @@
     <div class="modal-content">
     	<div class="modal-header">
         	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        	<h4 class="modal-title">Add New CVE Definition
+        	<h4 class="modal-title">Read CVE Definition
         	</h4>
       	</div>
       	<div class="modal-body">
@@ -13,19 +13,19 @@
       			<form>
       				<div class="just-float-left input-group col-sm-4 col-md-4">
 						<span class="input-group-addon" >CVE</span>
-						
+							<!-- 
 							<select name="cveIds" class="form-control input-group-addon"  placeholder="cveMeta"  aria-describedby="basic-addon1">
 								
 							</select>
-						<!-- 
+							-->
 						 	<input type="text" name="cveId" class="form-control nput-group-addon" placeholder="cve id" aria-describedby="basic-addon1">
-						-->
+						
 						<span class="input-group-addon " ><i class="ptr-hand fa fa-plus"></i></span>	
 						<span class="input-group-addon " >
 							<i  title="process" class="process-cve-data ptr-hand fa fa-cog"></i>
 						</span>						
 					</div>
-					<div class="input-group col-sm-8 col-md-8">
+					<div class="spacer input-group col-sm-8 col-md-8">
 							<span class="input-group-addon" id="cveTitle">Title</span>
 							<input type="text" name="cveTitle" class="form-control" placeholder="cveTitle" aria-describedby="basic-addon1">
 					</div>	
@@ -37,7 +37,7 @@
 		        		<a  href="#MetaInfo" data-toggle="tab" style="border-radius:0px !important">Meta Info</a>
 					</li>
 					<li>
-						<a href="#MetaDefinition" data-toggle="tab" style="border-radius:0px !important">Definition</a>
+						<a href="#MetaAffectedFamily" data-toggle="tab" style="border-radius:0px !important">Platform/Product</a>
 					</li>
 				</ul>
 			
@@ -68,11 +68,11 @@
 								</fieldset>
 					      	</form>
 					</div>
-					<!-- MetaDefinition -->
-					<div class="tab-pane" id="MetaDefinition">
-			           <table id="tblProduct" class="table table-stripped">
+					<!-- Affected Family -->
+					<div class="tab-pane" id="MetaAffectedFamily">
+			           <table id="tblFamily" class="table table-stripped">
 			           		<thead>
-			           			<tr><th>Entry</th><th>Option</th></tr>
+			           			<tr><th class="col-md-6">Name</th><th class="col-md-4">Type</th><th class="col-md-2"><input checked='checked' class='ptr-hand chk-platform-all' type="checkbox" aria-label="...">Select All</th></tr>
 			           		</thead>
 			           		<tbody>
 			           		
@@ -83,7 +83,7 @@
    	      	</div>       	
      	</div> <!-- modal-body -->
 		<div class="modal-footer">
-			<button id="btnAddDef" type="button" class="btn btn-primary" data-dismiss="modal">Add Selected Definition</button>
+			<button id="btnAddDef" type="button" class="btn btn-primary" >Add Selected Definition</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	    </div>
     </div>

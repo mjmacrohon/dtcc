@@ -47,32 +47,18 @@ public class UserDetailsServiceImpl extends LdapUserDetailsMapper implements Use
 			ui=new UserInfo(ud);
 		
 			Attributes attr=ctx.getAttributes();
-			attr.get("employeeNumber").get().toString();
-			
-			_log.info(ui);
-			_log.info(ui.getUsername());
-			_log.info(ui.isCredentialsNonExpired());
-
-/*			Attributes attr=ctx.getAttributes();
-			attr.get("employeeNumber").get().toString()
-			
-			UserInfo u=new UserInfo();
+			attr.get("employeeNumber").get().toString();	
 		
-			userDetails.setEmployeeNumber(attr.get("employeeNumber").get().toString());
-			userDetails.setFirstName(attr.get("givenName").get().toString());
-			userDetails.setLastName(attr.get("sn").get().toString());
-			//userDetails.setDepartment(attr.get("department").get().toString());
-			userDetails.setCostCenter(attr.get("iVSystemUserCostCenter").get().toString());
-			//userDetails.setTelephoneNo(attr.get("telephoneNumber").get().toString());
-			_log.info("CostCenter: " + attr.get("iVSystemUserCostCenter").get().toString());
-			userDetails.setCompanyCode(attr.get("iVSystemUserCompanyCode").get().toString());
-			userDetails.setEmail(attr.get("mail").get().toString());
-			userDetails.setCountryCode(attr.get("c").get().toString());
-			userDetails.setMunicipality(attr.get("l").get().toString());
-			userDetails.setAccountNonExpired(true);
-			userDetails.setAccountNonLocked(true);
-			userDetails.setEnabled(true);
+			ui.setFirstName(attr.get("givenName").get().toString());
+			ui.setLastName(attr.get("sn").get().toString());
+			ui.setEmail(attr.get("mail").get().toString());
 			
+			_log.info("FirstName: " + ui.getFirstName());
+			_log.info("LastName: " + ui.getLastName());
+
+			
+			
+/*			
 			//userDetails.setAuthorities(mapper.mapAuthorities(authorities));
 			userDetails.setAuthorities(readUserGroupMembership(ctx, userDetails));
 			_log.info("userName: " + userDetails.getUsername());

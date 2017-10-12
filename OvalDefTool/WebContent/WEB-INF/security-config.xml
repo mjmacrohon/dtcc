@@ -14,6 +14,7 @@
 	<security:http auto-config="true" entry-point-ref="casAuthEntryPoint" >
 		<security:csrf disabled="true"/>
 		<security:intercept-url pattern="/home/welcome.do" access="hasAnyRole('ADMIN','ROLE_DL PH CA Local Personnel')"/>
+		<security:intercept-url pattern="/cve/generator.do" access="hasAnyRole('ADMIN','ROLE_DL PH CA Local Personnel')"/>
 		<security:intercept-url pattern="/home/login.do" access="isAnonymous()"/>
 		<security:form-login 
 			login-page="/home/login.do"

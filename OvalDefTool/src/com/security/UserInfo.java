@@ -8,6 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserInfo implements UserDetails {
 
 	UserDetails ud;
+	
+	String lastName;
+	String firstName;
+	String fullName="";
+	String email;
+
+	
 	/**
 	 * 
 	 */
@@ -65,6 +72,72 @@ public class UserInfo implements UserDetails {
 		return ud.isEnabled();
 	}
 
+
+
+	public UserDetails getUd() {
+		return ud;
+	}
+
+
+
+	public void setUd(UserDetails ud) {
+		this.ud = ud;
+	}
+
+
+
+	public String getLastName() {
+		return lastName;
+	}
+
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+
+	public String getFullName() {
+		if (fullName.isEmpty()){
+			fullName=firstName + " " + lastName;
+		}
+		return fullName;
+	}
+
+
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	
+	
+	
 	
 	
 }

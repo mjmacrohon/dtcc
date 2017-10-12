@@ -94,6 +94,16 @@ table.dataTable.cell-border tbody tr:first-child td {
 table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
   background-color: #f9f9f9;
 }
+
+table.dataTable tr.odd{
+	background-color: #e1e0e4;
+}
+
+table.dataTable tr.even{
+	background-color: #f8f9fa;
+}
+
+
 table.dataTable.stripe tbody tr.odd.selected, table.dataTable.display tbody tr.odd.selected {
   background-color: #abb9d3;
 }

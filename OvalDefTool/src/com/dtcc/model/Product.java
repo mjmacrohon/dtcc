@@ -5,7 +5,7 @@ public class Product {
 	String family;
 	String type; //platform, product
 	String description;
-	
+	String platform;
 	
 	
 	public Product() {
@@ -43,6 +43,14 @@ public class Product {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.dtcc.controller;
 
 import java.util.Properties;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,10 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 @RequestMapping("/home")
+@SessionAttributes({"def_ctr","extended_ctr","testref_ctr"})
 public class Home {
 	
 	@Autowired
@@ -34,7 +38,12 @@ public class Home {
 	}
 
 	@RequestMapping("/login.do")
-	public String login(){		
+	public String login(Model model){	
+		Random rand = new Random();
+
+		model.addAttribute("def_ctr", rand.nextInt(9999) + 1);
+		model.addAttribute("extended_ctr", rand.nextInt(9999) + 1);
+		model.addAttribute("testref_ctr", rand.nextInt(9999) + 1);
 		return "login";
 	}
 	

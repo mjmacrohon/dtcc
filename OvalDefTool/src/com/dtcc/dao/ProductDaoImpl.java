@@ -1,8 +1,14 @@
 package com.dtcc.dao;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
 import com.dtcc.model.Product;
@@ -30,21 +36,75 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public List<Product> findByFamily(String family) {
-		List<Product> products = new ArrayList<Product>();
-		Product product;
-		
-		if (family.equalsIgnoreCase("windows")){
-			product=new Product("Windows 7", "Windows", "platform", ""); 	products.add(product);		
-			product=new Product("Windows 2000", "Windows", "platform", "");			products.add(product);
-			product=new Product("Windows 2007", "Windows", "platform", "");			products.add(product);
-			product=new Product("Windows 2008 Server", "Windows", "platform", "");			products.add(product);
-			product=new Product("Windows 2008 Server R2", "Windows", "platform", "");			products.add(product);
-		}else if(family.equalsIgnoreCase("unix")){
-			product=new Product("Unix 1", "unix", "platform", ""); 	products.add(product);		
-			product=new Product("Unix 2", "unix", "platform", ""); 	products.add(product);	
-			product=new Product("Unix 3", "unix", "platform", ""); 	products.add(product);	
+		// TODO Auto-generated method stub
+		return null;
+	}
+/*
+	@Autowired
+	DriverManagerDataSource dataSource;
+	
+	@Override
+	public String save(Product product) {
+		String result="OK";
+		try {
+			Connection con=dataSource.getConnection();
+			Statement stmt=con.createStatement();
+			stmt.execute("insert into product(name, family, type, description) values('"
+					+ product.getName()+"','"
+					+ product.getFamily()+"','"
+					+ product.getType()+"','"
+					+ product.getDescription()+"')");
+		} catch (SQLException e) {
+			result="NOK";
+			e.printStackTrace();
 		}
-		return products;
+		return result;
 	}
 
+	@Override
+	public String delete(Product product) {
+		String result="OK";
+		try {
+			Connection con=dataSource.getConnection();
+			Statement stmt=con.createStatement();
+			stmt.execute("delete from product where name='"
+					+ product.getName()+"' and family='"
+					+ product.getFamily()+"' and type='"
+					+ product.getType()+"' and description='"
+					+ product.getDescription()+"')");
+		} catch (SQLException e) {
+			result="NOK";
+			e.printStackTrace();
+		}
+		return result;	}
+
+	@Override
+	public String getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Product> findByFamily(String family) {
+		List<Product> products = new ArrayList<Product>();
+
+		try {
+			Connection con=dataSource.getConnection();
+			Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery("select * from product where family='"+family+"' order by name");
+			while(rs.next()){
+				Product p=new Product();
+				p.setName(rs.getString("name"));
+				p.setFamily(family);
+				p.setType(rs.getString("type"));
+				p.setDescription(rs.getString("description"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return products;
+	}
+*/
 }

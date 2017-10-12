@@ -11,7 +11,7 @@
 				  <span class="input-group-addon" id="sizing-addon3">Name</span>
 				  <input id="prodName" type="text" class="form-control"  aria-describedby="sizing-addon3">
 				</div>
-				<div class="input-group input-group-sm col-md-12">
+				<div class="spacer input-group input-group-sm col-md-12">
 				  <span class="input-group-addon" id="sizing-addon3">Family</span>
 		  			<select id="prodFamily" class="form-control"   aria-describedby="basic-addon1">
 						<c:forEach items="${families}" var="family">
@@ -19,14 +19,14 @@
 						</c:forEach>								
 					</select>				  
 				</div>
-				<div class="input-group input-group-sm col-md-12">
+				<div class="spacer input-group input-group-sm col-md-12">
 				  <span class="input-group-addon" id="sizing-addon3">Type</span>
 		  			<select id="prodType" class="form-control"   aria-describedby="basic-addon1">
 							<option>platform</option>			
 							<option>product</option>															
 					</select>				  
 				</div>
-				<div class="input-group input-group-sm col-md-12">
+				<div class="spacer input-group input-group-sm col-md-12">
 				  <span class="input-group-addon" id="sizing-addon3">Name</span>
 				  <input id="prodDescription" type="text" class="form-control"  aria-describedby="sizing-addon3">
 				</div>

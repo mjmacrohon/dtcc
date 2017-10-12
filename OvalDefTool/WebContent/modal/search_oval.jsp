@@ -68,23 +68,28 @@
 						</div>
 					</div>
 				</div>
-				</div>
-				<br class="warning">
-				<div class="row">
-					<table id="tblOvalDefinitions" class="table table-stripped">
-						<thead><tr><th>Definition ID</th><th>Class</th><th>Title</th><th>Last Modified</th></tr></thead>
-						<tbody>
-						
-						</tbody>
-					</table>					
-				</div>
+			</div><!-- input -->
+			<br>
+			<div class="row bg-warning">
+				<button id="btnSearchOval" type="button" class="btn btn-primary pull-right " >Search</button>
+			</div>
+			<br>
+			<div class="row">
+				<table id="tblOvalDefinitions" class="table table-stripped">
+					<thead><tr><th>Definition ID</th><th>Class</th><th>Title</th><th>Last Modified</th></tr></thead>
+					<tbody>
+					
+					</tbody>
+				</table>					
+			</div>
 				
 			</div><!-- container-fluid -->
       	</div> <!-- modal body -->
+      	<!-- 
 		<div class="modal-footer">
-			 <button id="btnSearchOval" type="button" class="btn btn-primary " >Search</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
 	    </div>
+	    -->
     </div>
   </div>
 </div>
