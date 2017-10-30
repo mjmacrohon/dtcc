@@ -13,7 +13,6 @@ import java.net.Proxy.Type;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +25,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.LineIterator;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -167,6 +167,7 @@ public class JsonRest {
 			url = new URL(sUrl);
 			//URLConnection con=url.openConnection(proxy);
 			//InputStream is=con.getInputStream();
+			_log.info(sUrl);
 		    InputStream is;
 		    if (appProp.getProperty("proxy.enabled").equals("1")){
 		    	is = url.openConnection(proxy).getInputStream();
@@ -410,8 +411,49 @@ public class JsonRest {
 		return locArticles;
 	}
 	
+	@RequestMapping("/ajaxSearchPosibleCriterion.do")
+	public @ResponseBody List<Article> ajaxSearchPosibleCriterion(@RequestBody List<Article> arts, @RequestParam String sFilter){
+		List<Article> entries=new ArrayList<Article>();
+		Map<String, Article> mapArticles=new HashMap<String, Article>();
+		_log.info(sFilter +" - " +arts.size());
+		for(Article art: arts){			
+			Article a=mapArticles.get(art.getDownloadUrl());
+			if (a==null){				
+				art.setFileVersion(searchFromCSVFileVersion(art.getDownloadUrl(),sFilter));
+				mapArticles.put(art.getDownloadUrl(), art);
+			}else {
+				art.setFileVersion(a.getFileVersion());
+			}		
+			entries.add(art);
+		}
+		
+		//entries=new ArrayList<Article>(mapArticles.values());
+		return entries;
+	}
 	
-	
+	private List<String> searchFromCSVFileVersion(String sUrl, String sFilter){
+		List<String> res=new ArrayList<>();
+		URL url;
+		try {
+			url = new URL(sUrl);
+			InputStream is = url.openConnection().getInputStream();
+			
+			LineIterator li=IOUtils.lineIterator(is,StandardCharsets.UTF_8);
+			while(li.hasNext()){				
+				String s=li.nextLine();
+				if (s.toLowerCase().contains("\""+sFilter.toLowerCase()+"\"".toLowerCase())){
+					res.add(s);
+					_log.info(s);
+				}
+			}			
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+
+		return res;
+	}
 	
 	
 //	https://oval.cisecurity.org/repository/search/results/download?page=1&definition_id=&title=&description=&reference_id=CVE-2017-8552&platform=&product=0&contributor=0&organization=0&class=0&family=0&status=0

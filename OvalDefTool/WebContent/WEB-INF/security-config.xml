@@ -34,7 +34,8 @@
 
 	<security:user-service id="userDetailServiceDefine">
 		<security:user name="macrmic" password="macrmic" authorities="ROLE_ADMIN" />
-		<security:user name="m" password="m" authorities="ROLE_USER" />
+		<security:user name="Michael John Macrohon" password="macrmic" authorities="ROLE_ADMIN" />
+		<security:user name="m" password="m" authorities="ROLE_USER"  />
 	</security:user-service>
 
 	<!-- LDAP -->

@@ -1,6 +1,7 @@
 package com.dtcc.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 
@@ -277,7 +278,8 @@ public class CveProcess {
 		
 		try {
 			OvaDef odGentr=ovaldefs.get(0);
-			UserInfo ui=(UserInfo) auth.getPrincipal();
+			//UserInfo ui=(UserInfo) auth.getPrincipal();
+			String name=auth.getName();
 			db = dbFactory.newDocumentBuilder();
 			ovaldbf=db.newDocument();
 			Element oval_definitions=ovaldbf.createElement("oval_definitions");
@@ -383,7 +385,7 @@ public class CveProcess {
 				Element contributor=ovaldbf.createElement("oval-def:contributor");
 				submitted.appendChild(contributor);
 				contributor.setAttribute("organization", "DTCC");
-				contributor.setTextContent(ui.getFullName());
+				contributor.setTextContent(name);
 				
 				//status
 				Element status=ovaldbf.createElement("oval-def:status");
@@ -413,7 +415,12 @@ public class CveProcess {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 			
-			StreamResult streamResult=new StreamResult(new File("C:/Users/macrmic/Documents/Projects/Oval/OVALDef_"+odGentr.getTimestamp().split("T")[0]+".xml"));
+			String sFolder="C:/Temp/Oval";
+			java.io.File ioFolder=new File(sFolder);
+			if (!ioFolder.exists()){
+				ioFolder.mkdir();
+			}
+			StreamResult streamResult=new StreamResult(new File(sFolder+"/OVALDef_"+odGentr.getTimestamp().split("T")[0]+".xml"));
 			transformer.transform(source, streamResult);
 			StreamResult consoleResult=new StreamResult(System.out);
 			transformer.transform(source, consoleResult);
@@ -441,8 +448,7 @@ public class CveProcess {
 	@RequestMapping(value="/xmlresult.do",method=RequestMethod.GET,
             produces=MediaType.APPLICATION_XML_VALUE)
 	public @ResponseBody String xmlresult( Authentication auth){
-		@SuppressWarnings("unused")
-		UserInfo ui=(UserInfo) auth.getPrincipal();
+		//UserInfo ui=(UserInfo) auth.getPrincipal();
 		return xmlResult;
 	}
 	

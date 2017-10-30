@@ -25,14 +25,15 @@ public class JSoupTest {
 		//System.setProperty("https.proxyPort", "9400");
 		//mitre
 		
-		String sUrl="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-0001";
+		String sUrl="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-8736";
+		Jsoup.connect(sUrl).get();
 		//sUrl="http://lisc-ordmgrd01/order-manager-ui/";
 		Document jSoupDoc=Jsoup.connect(sUrl).proxy(proxy).get();
 		_log.info("" + jSoupDoc.title());
 		_log.info("" + jSoupDoc.select("td").get(8).html());
 		
 		//nvd
-		sUrl="https://nvd.nist.gov/vuln/detail/CVE-2017-8552";	
+		sUrl="http://nvd.nist.gov/vuln/detail/CVE-2017-8552";	
 		jSoupDoc=Jsoup.connect(sUrl).get();
 		_log.info("" + jSoupDoc.title());
 		_log.info("" + jSoupDoc.select("p[data-testid='vuln-description']").html());
